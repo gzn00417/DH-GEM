@@ -69,8 +69,6 @@ class TrainTalentTrendPredictModel(pl.LightningModule):
         return (d_os, s_os), (d_ys, s_ys)
 
     def test_step(self, batch, batch_idx):
-        (d_x, s_x), (d_y, s_y), l, c, p, t_s, t_e = batch
-        batch = (d_x, s_x), (d_y, s_y), l, self.c_dict[c].to(self.device), p, t_s, t_e
         return self.validation_step(batch, batch_idx)
 
     def test_epoch_end(self, test_step_outputs):

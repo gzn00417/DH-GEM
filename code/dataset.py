@@ -243,7 +243,7 @@ def _generate_data(demand_count: pd.DataFrame, supply_count: pd.DataFrame, time_
         ys.append(d_y)
         ys.append(s_y)
     val_range_list = _get_labels(torch.stack(ys), class_num)
-    print(val_range_list)
+    # print(val_range_list)
     for sample in data:
         d_y, s_y = sample['Y']
         d_y_label = _to_label(d_y, val_range_list, class_num)
