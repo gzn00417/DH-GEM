@@ -8,6 +8,8 @@ import random
 
 
 class OriginDataset(object):
+    '''Base class for posting dataset (for demand) and work experience dataset (for supply)
+    '''
 
     def __init__(self, data):
         super().__init__()
@@ -40,6 +42,8 @@ class OriginDataset(object):
 
 
 class PostingDataset(OriginDataset):
+    '''Job posting dataset (for demand)
+    '''
 
     def __init__(self, data_path: str):
         self.posting: pd.DataFrame = pd.read_csv(
@@ -66,6 +70,8 @@ class PostingDataset(OriginDataset):
 
 
 class WorkExperienceDataset(OriginDataset):
+    '''Work experience dataset (for supply)
+    '''
 
     def __init__(self, data_path: str):
         self.work_experience: pd.DataFrame = pd.read_csv(
@@ -156,6 +162,8 @@ class SingleTalentTrendDataset(Dataset):
 
 
 class TalentTrendDataset(SingleTalentTrendDataset):
+    '''Joint talent demand and supply dataset
+    '''
 
     def __init__(self, demand: PostingDataset, supply: WorkExperienceDataset, max_length: int, class_num: int, min_length: int, *args, **kwargs):
         assert len(demand.time_range) == len(supply.time_range) and demand.time_range == supply.time_range and demand.companies == supply.companies and demand.positions == supply.positions
@@ -184,6 +192,8 @@ class TalentTrendDataset(SingleTalentTrendDataset):
 
 
 class Taskset(object):
+    '''Taskset for meta-learning, split tasks which respectively represent data within a company.
+    '''
 
     def __init__(self, company_num: int, position_num: int, data: list, max_length: int, *args, **kwargs):
         super().__init__()
@@ -219,6 +229,8 @@ class Taskset(object):
 # ----------------------Utilities----------------------
 
 def _generate_data(demand_count: pd.DataFrame, supply_count: pd.DataFrame, time_range: list, companies: list, positions: list, class_num: int, min_length: int, company_flow_matrix: list, position_flow_matrix: list):
+    '''generate training sequence data and demand/supply normalized company-position pairwise matrix data
+    '''
     demand_matrices = _get_matrices(demand_count, time_range, companies, positions)
     supply_matrices = _get_matrices(supply_count, time_range, companies, positions)
     # sampling
@@ -253,6 +265,8 @@ def _generate_data(demand_count: pd.DataFrame, supply_count: pd.DataFrame, time_
 
 
 def _get_matrices(count, time_range, companies, positions):
+    '''get normalized company-position pairwise matrix data
+    '''
     matrices = {}
     # build matrix
     for time in time_range:
@@ -270,6 +284,8 @@ def _get_matrices(count, time_range, companies, positions):
 
 
 def _get_labels(vec: torch.Tensor, class_num: int):
+    '''split all range for data and get value range for each labels
+    '''
     vec_tmp: torch.Tensor = vec.reshape(-1)
     vec_tmp, _ = vec_tmp.sort()
     n = len(vec_tmp)
@@ -281,6 +297,8 @@ def _get_labels(vec: torch.Tensor, class_num: int):
 
 
 def _to_label(vec: torch.Tensor, val_range_list: list, class_num: int):
+    '''map continuous values to `class_num` discrete labels for `vec` using `val_range_list`
+    '''
 
     def _to_label_(v: float, val_range_list: list, class_num: int):
         if v < val_range_list[0]:
@@ -294,6 +312,8 @@ def _to_label(vec: torch.Tensor, val_range_list: list, class_num: int):
 
 
 def _construct_composhg(nc: int, np: int, demand_matrices: torch.Tensor, supply_matrices: torch.Tensor, company_flow_matrix_ti: list, position_flow_matrix_ti: list):
+    '''construct company-position heterogeneous graph
+    '''
     cids, pids, dvs = [], [], []
     ciss, piss, svs = [], [], []
     for ci in range(nc):

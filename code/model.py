@@ -9,6 +9,9 @@ import dgl.nn.pytorch as dgl_nn
 
 class BaseSeqModel(nn.Module):
 
+    '''Basic sequential model for prediction, providing default operation, modules and loss functions
+    '''
+
     def __init__(self, *args, **kwargs):
         super().__init__()
         self.criterion = nn.NLLLoss()
@@ -47,6 +50,9 @@ class BaseSeqModel(nn.Module):
 # ----------------------RNNs----------------------
 
 class BaseRNNModel(BaseSeqModel):
+    '''Override BaseSeqModel for recurrent neural networks variants, which can easily used based on this class
+    '''
+
     def __init__(
         self,
         ENCODER: nn.Module,
@@ -116,6 +122,8 @@ class LSTM(BaseRNNModel):
 # ----------------------DH-GEM----------------------
 
 class DH_GEM(BaseSeqModel):
+    '''Dynamic Heterogeneous Graph Enhanced Meta-learner
+    '''
 
     def __init__(self, hgs, companies_num, positions_num, embed_dim, com_pos_embed_dim, class_num, hidden_dim, nhead, nhid, nlayers, dropout, *args, **kwargs):
         super().__init__()
@@ -190,6 +198,8 @@ class DH_GEM(BaseSeqModel):
 
 
 class DyComPosHGNN(nn.Module):
+    '''Dynamic Company Position Heterogeneous Graph Neural Network
+    '''
 
     def __init__(self, hgs, companies_num, positions_num, com_pos_embed_dim):
         super().__init__()
@@ -237,6 +247,8 @@ class DyComPosHGNN(nn.Module):
 # ----------------------Utilities----------------------
 
 class PositionalEncoding(nn.Module):
+    '''Positional Encoding for Transformer
+    '''
 
     def __init__(self, d_model, dropout=0.1, max_len=100):
         super(PositionalEncoding, self).__init__()
@@ -277,6 +289,8 @@ def _repeat_seq_dim(seq: torch.Tensor, seq_len: int):
 
 
 class ComPosHGNN(nn.Module):
+    '''Company-Position Heterogeneous Graph Neural Network
+    '''
 
     def __init__(self, com_pos_embed_dim: int):
         super().__init__()

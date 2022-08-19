@@ -4,6 +4,8 @@ from torch.utils.data import DataLoader, random_split
 
 
 class TalentTrendDataModule(pl.LightningDataModule):
+    '''Lightning data module of joint demand-supply dataset for training/validation/testing
+    '''
 
     def __init__(self, joint_dataset, *args, **kwargs):
         super().__init__()

@@ -38,10 +38,18 @@ In this work, we conduct experiments on 3 datasets, i.e. IT, FIN, CONS. They hav
 |People|Company|StartDate|EndDate|Position|
 |:-:|:-:|:-:|:-:|:-:|
 |456342|IBM|201603|201603|Information|
+|...|...|...|...|
 
 # Citation
 
 If you find our work interesting, you can cite the paper as
 
 ```
+@inproceedings{guo2022talent,
+  title={Talent Demand-Supply Joint Prediction with Dynamic Heterogeneous Graph Enhanced Meta-Learning},
+  author={Guo, Zhuoning and Liu, Hao and Zhang, Le and Zhang, Qi and Zhu, Hengshu and Xiong, Hui},
+  booktitle={Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining},
+  pages={2957--2967},
+  year={2022}
+}
 ```

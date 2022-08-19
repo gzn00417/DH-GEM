@@ -9,6 +9,9 @@ import gc
 
 class TrainTalentTrendPredictModel(pl.LightningModule):
 
+    '''Lightning training module for talent demand and supply trend prediction model
+    '''
+
     ignore_params = ['model']
 
     def __init__(self, model: nn.Module, *args, **kwargs):
@@ -83,6 +86,9 @@ class TrainTalentTrendPredictModel(pl.LightningModule):
 
 
 class TrainMeta(pl.LightningModule):
+
+    '''Lightning training module for talent demand and supply trend prediction model in a meta-learning strategy
+    '''
 
     from dataset import Taskset
 
@@ -201,6 +207,8 @@ class TrainMeta(pl.LightningModule):
 # ----------------------Utilities----------------------
 
 def _eval_metrics(output: torch.Tensor, labels: torch.Tensor, class_num):
+    '''evaluate model in three classification metrics: accuracy, weighted f1 score and auroc
+    '''
     _, output_labels = output.view(-1, class_num).max(dim=-1, keepdim=False)
     acc = accuracy(output_labels, labels)
     weighted_f1 = f1(output_labels, labels, average='weighted', num_classes=class_num)
@@ -209,6 +217,8 @@ def _eval_metrics(output: torch.Tensor, labels: torch.Tensor, class_num):
 
 
 def _log_metrcis_values(self: pl.LightningModule, demand_acc, demand_f1, demand_auroc, supply_acc, supply_f1, supply_auroc, total_acc, total_f1, total_auroc):
+    '''logging operation for Lightning module
+    '''
     self.log('Demand Accuracy', demand_acc, on_epoch=True, prog_bar=False, logger=True)
     self.log('Demand Weighted-F1', demand_f1, on_epoch=True, prog_bar=True, logger=True)
     self.log('Demand AUROC', demand_auroc, on_epoch=True, prog_bar=False, logger=True)
