@@ -3,6 +3,12 @@ import pytorch_lightning as pl
 
 
 def parse_global_args():
+    """parse global arguments
+
+    Returns:
+        argparse.ArgumentParser: parser
+        sys.orig_argv: global arguments
+    """
     parser = argparse.ArgumentParser()
     parser = pl.Trainer.add_argparse_args(parser)
     parser.add_argument('-R', '--root', type=str, default='../data')
@@ -21,6 +27,16 @@ def parse_global_args():
 
 
 def parse_args(parent_parser: argparse.ArgumentParser, model: str, dataset: str):
+    """parse arguments for specific model and dataset
+
+    Args:
+        parent_parser (argparse.ArgumentParser): parent parser for returning parser
+        model (str): model name
+        dataset (str): dataset name
+
+    Returns:
+        sys.orig_argv: parsed arguments for the model and the dataset
+    """
     parser = parent_parser.add_argument_group(model)
 
     # ----------------------IT----------------------

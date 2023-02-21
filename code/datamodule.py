@@ -16,10 +16,25 @@ class TalentTrendDataModule(pl.LightningDataModule):
         self.test_dataset = self.val_dataset
 
     def train_dataloader(self):
+        """return dataloader for training
+
+        Returns:
+            torch.utils.data.Dataloader: dataloader for training
+        """
         return DataLoader(self.train_dataset, batch_size=self.hparams.train_batch_size, pin_memory=True, shuffle=True)
 
     def val_dataloader(self):
+        """return dataloader for validation
+
+        Returns:
+            torch.utils.data.Dataloader: dataloader for validation
+        """
         return DataLoader(self.val_dataset, batch_size=self.hparams.val_batch_size, pin_memory=True)
 
     def test_dataloader(self):
+        """return dataloader for testing
+
+        Returns:
+            torch.utils.data.Dataloader: dataloader for testing
+        """
         return DataLoader(self.test_dataset, batch_size=self.hparams.test_batch_size, pin_memory=True)

@@ -22,22 +22,47 @@ class OriginDataset(object):
 
     @property
     def time_attr_name(self):
+        """time attribute name in DataFrame
+
+        Raises:
+            NotImplementedError: for implement in subclass
+        """
         raise NotImplementedError
 
     @property
     def time_range(self):
+        """time range for data
+
+        Returns:
+            List: time indices list for data
+        """
         return self._time_range
 
     @property
     def companies(self):
+        """company list in data
+
+        Returns:
+            List: companies
+        """
         return self.data['Company'].value_counts().sort_index().index.tolist()
 
     @property
     def positions(self):
+        """position list in data
+
+        Returns:
+            List: positions
+        """
         return self.data['Position'].value_counts().sort_index().index.tolist()
 
     @property
     def count(self):
+        """count values for data
+
+        Returns:
+            pd.DataFrame: counted data frame
+        """
         raise NotImplementedError
 
 
@@ -59,10 +84,20 @@ class PostingDataset(OriginDataset):
 
     @property
     def time_attr_name(self):
+        """time attribute name in DataFrame
+
+        Returns:
+            str: time attribute name in DataFrame
+        """
         return 'Time'
 
     @property
     def count(self):
+        """count values for data
+
+        Returns:
+            pd.DataFrame: counted data frame
+        """
         count = self.data.groupby(by=['Company', 'Position', self.time_attr_name]).count()
         count = count[count.columns.tolist()[0]]  # choose first(any) column
         count = count.unstack(fill_value=0).stack()  # fill missing
@@ -89,10 +124,20 @@ class WorkExperienceDataset(OriginDataset):
 
     @property
     def time_attr_name(self):
+        """time attribute name in DataFrame
+
+        Returns:
+            str: time attribute name in DataFrame
+        """
         return 'EndDate'
 
     @property
     def count(self):
+        """count values for data
+
+        Returns:
+            pd.DataFrame: counted data frame
+        """
         count = self.data.groupby(by=['Company', 'Position', self.time_attr_name]).count()
         count = count[count.columns.tolist()[0]]  # choose first(any) column
         count = count.unstack(fill_value=0).stack()  # fill missing
